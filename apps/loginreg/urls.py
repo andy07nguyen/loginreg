@@ -1,0 +1,11 @@
+from django.conf.urls import url
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.index),
+    url(r'^process$', views.process),
+    url(r'^userlogin$', views.loginProcess),
+    url(r'^success$', views.success),
+    url(r'^logout$', views.logout),
+    url(r'^.+$', views.index)
+]
