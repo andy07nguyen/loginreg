@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from .models import User
+from .models import User, Trip
 from django.contrib import messages
 # Create your views here.
 def index(request):
@@ -24,7 +24,7 @@ def process(request):
             print i
             messages.success(request, i)
         return redirect('/')
-    return redirect('/success')
+    return redirect('/travels')
 
 def loginProcess(request):
     if request.method == "GET":
@@ -41,9 +41,9 @@ def loginProcess(request):
             # print i
             messages.success(request, i)
         return redirect('/')
-    return redirect('/success')
+    return redirect('/travels')
 
-def success(request):
+def travels(request):
     if "id" not in request.session:
         return redirect('/')
     else:
@@ -52,6 +52,47 @@ def success(request):
             "user": user
         }
     return render(request, 'loginreg/success.html', context)
+
+
+def addplan(request):
+    return render(request, "loginreg/addtravels.html")
+
+def addProcess(request):
+    userTrip = Trip.objects.addTrip(request.POST)
+    if userTrip[0] == True:
+        # print "="*50, userTrip[1], "="*50
+        messages.success(request, 'Successful Added New Trip!')
+
+        context = {
+            "trip": Trip.objects.all()
+        }
+
+        return render(request, 'loginreg/success.html', context)
+    else:
+        for i in userTrip[1]:
+            messages.success(request, i)
+        return redirect('/add')
+    return redirect('/travels')
+
+def destroy(request, id):
+    data = {
+    'tripId': Trip.objects.get(id=id),
+    "trips": Trip.objects.filter(id=id)
+    }
+    return render(request, 'loginreg/destroy.html', data)
+
+def remove(request, id):
+    # tripId = Trip.objects.get(id=id),
+    trips = Trip.objects.filter(id=id).delete()
+    return redirect('/travels')
+
+
+
+
+
+
+
+
 
 def logout(request):
     if request.method == "GET":

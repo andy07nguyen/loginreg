@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Remove</title>
+  </head>
+  <body>
+    <h1>Are you sure you want to delete the following trip?</h1>
+    {% for a in trips %}
+      <h3>Destination: {{a.destination}}</h3>
+      <h3>Description: {{a.description}}</h3>
+      <h3>Travel Start Date: {{a.start_date}}</h3>
+      <h3>Travel End Date: {{a.end_date}}</h3>
+      <a href="/">No</a>
+      <a href="{% url 'delete' a.id %}">Yes! I want to delete this</a>
+    {% endfor %}
+  </body>
+</html>
